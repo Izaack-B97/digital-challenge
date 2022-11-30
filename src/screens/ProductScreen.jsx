@@ -1,34 +1,28 @@
 import React from 'react'
-import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import { SafeAreaComponent } from '../components/SafeAreaComponent'
+import { Text, StyleSheet, View, Image } from 'react-native'
 
-export const ProductScreen = () => {
+import { SafeAreaComponent, ButtonComponent } from '../components'
+
+import { globalStyles } from '../appTheme/globalStyles';
+
+export const ProductScreen = ({ navigation, route }) => {
+
+  const item = route.params;
+
   return (
     <SafeAreaComponent>
-      <View style={ styles.container }>
-          <View style={ styles.welcomeSection }>
-            <Text style={ styles.txtHeader }>¡Bienvenido!</Text>
-            <Text style={ styles.txtName }>Isaac Bustamante Ibarrola</Text>
-            <Text style={ styles.txtFecha }>Cumpleaños: 25 de Octubre</Text>
+      <View style={ styles.container }>  
+        <Text style={ styles.h1 }>{ item.product }</Text>
+        <View style={[ styles.pointsContainer, globalStyles.shadow ]}>
+          <View style={[ styles.imgContainer, globalStyles.shadow ]}>
+            <Image source={{ uri: item.image }} style={ styles.img } />
           </View>
-
-          <View style={ styles.productsSection }>
-            <Text style={{ ...styles.txtHeader, marginLeft: 10, marginTop: 5 }}>Tus movimientos</Text>
-            <ScrollView style={ styles.movementsContainer } showsVerticalScrollIndicator={ false }>
-              {
-                [1,2,3,4,,5,56,6,6,6,6,6,6,6,6,6,,6,5,,5,,,4,4,,4,4,44,4,44,4,44,4,44,4,44,4,44,4,44,4,44,4,44,4,44,4,44,4,44,4,44,4,44,4,44,4,44,4,44,4,44,4,44,4,4,,4,4,4,4,,4,4,,4,4,4,,4].map((item, index) => <Text key={ index }>Hola</Text>)
-              }
-            </ScrollView>
-          </View>
-          
-      </View>
-      <View style={ styles.buttonsContainer }>
-        <TouchableOpacity style={ styles.btn }>
-          <Text style={ styles.btnTxt } >Canjeados</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={ styles.btn }>
-          <Text style={ styles.btnTxt } >Ganados</Text>
-        </TouchableOpacity>
+          <Text style={ styles.h1 }>{ item.is_redemption ? 'Ganaste' : 'Perdiste' }</Text>
+          <Text style={ styles.h2 }>{ item.price.substring( 0, 3 ) } puntos</Text>
+        </View>
+        <View style={ styles.btnContainer }>
+          <ButtonComponent text='Regresar' handleAction={ () => navigation.goBack() }/>
+        </View>
       </View>
     </SafeAreaComponent>
   )
@@ -37,57 +31,45 @@ export const ProductScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    overflow: 'hidden'
+    marginHorizontal: 10,
+    paddingTop: 25
   },
 
-  welcomeSection: {
-    height: 142,
+  pointsContainer: {
+    flex: 1,
     backgroundColor: '#afecff',
-    borderBottomLeftRadius: 25,
-    borderBottomRightRadius: 25,
-    paddingTop: 30,
-    paddingLeft: 10
+    borderRadius: 20,
+    marginTop: 10,
+    justifyContent: 'center',
+    alignItems: 'center'
+  },  
+
+  btnContainer: {
+    padding: 20, 
+    alignItems: 'center'
   },
   
-  txtHeader: {
-    fontWeight: 'bold',
-    fontSize: 20
+  imgContainer: {
+    height: 120,
+    width: 120,
+    borderRadius: 100,
+    overflow: 'hidden',
+    
+    
   },
 
-  txtName: {
-    fontSize: 20,
-    marginTop: 7,
-    marginBottom: 10
+  img: {
+    flex: 1
   },
 
-  txtFecha: {
-    fontSize: 14
-  },
-
-  movementsContainer: {
-    marginLeft: 10,
-    paddingTop: 15,
-    paddingBottom: 30
-  },
-
-  buttonsContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    padding: 5,
-    paddingBottom: 17
-  },
-
-  btn: {
-    backgroundColor: '#afecff',
-    width: '48%',
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 1,
-    borderRadius: 5
-  },
-
-  btnTxt: {
+  h1: {
+    fontSize: 30,
     fontWeight: 'bold'
-  }
+  },
+
+  h2: {
+    fontSize: 25,
+    fontWeight: 'bold'
+  },
 
 });
